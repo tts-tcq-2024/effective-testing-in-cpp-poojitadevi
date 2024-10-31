@@ -58,7 +58,20 @@ void testPrintColorMap() {
         "24 | Violet | Slate\n";
 
     // Compare the captured output with the expected output
-    assert(buffer.str() == expectedOutput);
+    std::string actualOutput = buffer.str();
+    assert(actualOutput.length() == std::strlen(expectedOutput)); // Check output length first
+
+    // Ensure that each line in the output is correct by comparing line-by-line
+    std::istringstream actualStream(actualOutput);
+    std::istringstream expectedStream(expectedOutput);
+    std::string actualLine, expectedLine;
+    int lineCount = 0;
+
+    while (std::getline(actualStream, actualLine) && std::getline(expectedStream, expectedLine)) {
+        assert(actualLine == expectedLine && "Mismatch in color mapping output");
+        lineCount++;
+    }
+    assert(lineCount == 25 && "Output should contain exactly 25 lines");
 
     std::cout << "Test passed. The color map is correct!\n";
 }
